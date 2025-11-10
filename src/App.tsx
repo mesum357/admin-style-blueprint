@@ -10,6 +10,7 @@ import Dashboard from "./pages/admin/Dashboard";
 import BlogManagement from "./pages/admin/BlogManagement";
 import GalleryManagement from "./pages/admin/GalleryManagement";
 import LibraryManagement from "./pages/admin/LibraryManagement";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -22,10 +23,38 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/admin/login" element={<Login />} />
-          <Route path="/admin" element={<Dashboard />} />
-          <Route path="/admin/blog" element={<BlogManagement />} />
-          <Route path="/admin/gallery" element={<GalleryManagement />} />
-          <Route path="/admin/library" element={<LibraryManagement />} />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/blog"
+            element={
+              <ProtectedRoute>
+                <BlogManagement />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/gallery"
+            element={
+              <ProtectedRoute>
+                <GalleryManagement />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/library"
+            element={
+              <ProtectedRoute>
+                <LibraryManagement />
+              </ProtectedRoute>
+            }
+          />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

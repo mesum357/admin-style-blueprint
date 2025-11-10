@@ -1,5 +1,5 @@
 import { LayoutDashboard, FileText, Image, BookOpen, LogOut } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   Sidebar,
   SidebarContent,
@@ -11,6 +11,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { toast } from "@/hooks/use-toast";
 
 const navItems = [
   { title: "Dashboard", url: "/admin", icon: LayoutDashboard },
@@ -22,6 +23,21 @@ const navItems = [
 export function AdminSidebar() {
   const { state } = useSidebar();
   const isCollapsed = state === "collapsed";
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Clear authentication data
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("user");
+    
+    toast({
+      title: "Logged out",
+      description: "You have been successfully logged out",
+    });
+    
+    // Redirect to login page
+    navigate("/admin/login");
+  };
 
   return (
     <Sidebar className="border-r border-sidebar-border">
@@ -61,7 +77,10 @@ export function AdminSidebar() {
         </SidebarGroup>
 
         <div className="mt-auto border-t border-sidebar-border p-4">
-          <button className="flex items-center gap-3 px-3 py-2.5 w-full rounded-md text-destructive hover:bg-destructive/10 transition-all">
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3 px-3 py-2.5 w-full rounded-md text-destructive hover:bg-destructive/10 transition-all"
+          >
             <LogOut className="h-5 w-5 shrink-0" />
             {!isCollapsed && <span>Logout</span>}
           </button>
